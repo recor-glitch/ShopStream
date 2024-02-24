@@ -13,6 +13,6 @@ export const startApolloServer = async () => {
     typeDefs: schemas,
     resolvers,
     plugins: [],
-  }) as any;
+  });
   await server.start();
 };
