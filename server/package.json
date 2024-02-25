@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "scripts": {
     "start": "tsc && node ./dist/app.js",
-    "dev": "nodemon src/shared/infrastructure/app.ts"
+    "dev": "nodemon src/shared/infrastructure/app.ts",
+    "generate": "npx prisma generate",
+    "migrate": "npx prisma migrate dev"
   },
   "keywords": [],
   "author": "",

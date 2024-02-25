@@ -1,11 +1,7 @@
 import { PrismaClient } from "@prisma/client";
-import { generateToken, comparePasswords, hashPassword } from "./authService";
-import { IUserDto } from "../domain/userDto";
 import { IUser } from "../domain/user";
-import {
-  PrismaClientKnownRequestError,
-  PrismaClientUnknownRequestError,
-} from "@prisma/client/runtime/library";
+import { IUserDto } from "../domain/userDto";
+import { comparePasswords, generateToken, hashPassword } from "./authService";
 
 const prisma = new PrismaClient();
 
@@ -53,6 +49,51 @@ export async function createUser({
     // }
     // if (err instanceof PrismaClientUnknownRequestError)
     //   throw new Error(err.message);
+    throw err;
+  }
+}
+
+export async function getAllUsers(): Promise<IUser[]> {
+  try {
+    const users = (await prisma.user.findMany({
+      select: { name: true, email: true, id: true },
+    })) as IUser[];
+
+    return users.map((user) => ({
+      name: user.name ?? "",
+      email: user.email,
+      id: user.id,
+    }));
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getUserById({ id }: { id: number }): Promise<IUser> {
+  try {
+    console.log({ id });
+    return (await prisma.user.findFirst({
+      where: { id },
+    })) as IUser;
+  } catch (err) {
+    throw err;
+  }
+}
+
+export async function getUsersByQuery({
+  query,
+}: {
+  query: string;
+}): Promise<IUser[]> {
+  try {
+    const users = (await prisma.user.findMany({
+      select: { name: true, email: true, id: true },
+    })) as IUser[];
+    return users.filter(
+      (user) =>
+        user.name.toLowerCase().includes(query) || user.email.includes(query)
+    );
+  } catch (err) {
     throw err;
   }
 }
