@@ -4,4 +4,7 @@ export interface IUser {
   email: string;
 }
 
-
+export interface IcreateUserResponse {
+  token: string;
+  success: boolean;
+}

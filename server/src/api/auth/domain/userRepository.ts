@@ -1,5 +1,5 @@
 import { IUserDto } from "./userDto";
-import { IUser } from "./user";
+import { IUser, IcreateUserResponse } from "./user";
 import {
   createUser,
   getAllUsers,
@@ -8,7 +8,7 @@ import {
 } from "../infrastructure/userRepositoryPrisma";
 
 export interface IUserRepository {
-  createUser(user: IUserDto): Promise<IUser>;
+  createUser(user: IUserDto): Promise<IcreateUserResponse>;
   findUserById(id: number): Promise<IUser>;
   findUsersByQuery(query: string): Promise<IUser[]>;
   getAllUsers(): Promise<IUser[]>;
@@ -16,7 +16,7 @@ export interface IUserRepository {
 
 export const createUserRespository = (): IUserRepository => {
   return {
-    createUser: async (user: IUserDto): Promise<IUser> =>
+    createUser: async (user: IUserDto): Promise<IcreateUserResponse> =>
       await createUser(user),
     findUsersByQuery: async (query: string): Promise<IUser[]> =>
       await getUsersByQuery({ query }),

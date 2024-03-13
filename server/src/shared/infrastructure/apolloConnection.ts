@@ -1,8 +1,12 @@
-import { ApolloServer, gql } from "apollo-server-express";
 import { typeDefs as authSchema } from "@/api/auth/application/schema";
 import { resolvers as authResolver } from "@/api/auth/application/resolvers";
 import { Application } from "express";
 import { authenticateToken } from "./middleware";
+import { ApolloServer } from "@apollo/server";
+import gql from "graphql-tag";
+import { expressMiddleware } from "@apollo/server/express4";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import http from "http";
 
 export const startApolloServer = async (app: Application) => {
   const schemas = gql`
@@ -12,21 +16,26 @@ export const startApolloServer = async (app: Application) => {
     ...authResolver,
   };
 
-  app.use("/graphql", (req, res, next) => {
-    if (req.body.operationName !== "CreateUser2") {
-      app.use(authenticateToken);
-    }
-    next();
-  });
+  const httpServer = http.createServer(app);
 
   const server = new ApolloServer({
     typeDefs: schemas,
     resolvers,
-    plugins: [],
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
   });
+
   try {
     await server.start();
-    server.applyMiddleware({ app: app as any });
+    app.use(
+      "/graphql",
+      (req, _, next) => {
+        if (req.body.operationName !== "CreateUser") {
+          app.use(authenticateToken);
+        }
+        next();
+      },
+      expressMiddleware(server)
+    );
   } catch (err) {
     console.log("Error starting Apollo server: ", err);
   }

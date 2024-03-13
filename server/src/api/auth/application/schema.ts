@@ -1,19 +1,28 @@
-import { gql } from "apollo-server";
+import gql from "graphql-tag";
 
 export const typeDefs = gql`
   type User {
-    id: ID!
+    id: Int!
     name: String!
     email: String!
   }
 
+  type CreateUserResponse {
+    token: String!
+    success: Boolean!
+  }
+
   type Query {
-    getUser(id: ID!): User
+    getUser(id: Int!): User
     getAllUsers: [User]
     findUsersByQuery(query: String!): [User]
   }
 
   type Mutation {
-    createUser(name: String!, password: String!, email: String!): User
+    createUser(
+      name: String!
+      password: String!
+      email: String!
+    ): CreateUserResponse
   }
 `;
