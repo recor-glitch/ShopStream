@@ -1,12 +1,11 @@
-import { createSigner, createVerifier } from "fast-jwt";
 import bcrypt from "bcrypt";
-import { IUser } from "../domain/user";
+import { createSigner, createVerifier } from "fast-jwt";
 
-const secret = process.env.JWT_SECRET || "your-secret-key";
+const secret = process.env.JWT_SECRET;
 const signer = createSigner({ key: secret });
 const verifier = createVerifier({ key: secret });
 
-export function generateToken(payload: IUser): string {
+export function generateToken(payload: { [key: string]: any }): string {
   return signer({ exp: Math.floor(Date.now() / 1000) + 60 * 60, ...payload });
 }
 

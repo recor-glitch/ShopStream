@@ -26,16 +26,7 @@ export const startApolloServer = async (app: Application) => {
 
   try {
     await server.start();
-    app.use(
-      "/graphql",
-      (req, _, next) => {
-        if (req.body.operationName !== "CreateUser") {
-          app.use(authenticateToken);
-        }
-        next();
-      },
-      expressMiddleware(server)
-    );
+    app.use("/graphql", authenticateToken, expressMiddleware(server));
   } catch (err) {
     console.log("Error starting Apollo server: ", err);
   }

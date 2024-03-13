@@ -2,7 +2,6 @@ import { PrismaClient } from "@prisma/client";
 import { IUser, IcreateUserResponse } from "../domain/user";
 import { IUserDto } from "../domain/userDto";
 import { comparePasswords, generateToken, hashPassword } from "./authService";
-import { createSigner } from "fast-jwt";
 
 const prisma = new PrismaClient();
 
@@ -44,9 +43,11 @@ export async function createUser({
       },
     });
 
-    const signSync = createSigner({ key: process.env.JWT_SECRET });
-    const token = signSync({ name: user.name, email: user.email, id: user.id });
-    console.log({ token });
+    const token = generateToken({
+      name: user.name,
+      email: user.email,
+      id: user.id,
+    });
     return { token, success: true };
   } catch (err) {
     throw err;

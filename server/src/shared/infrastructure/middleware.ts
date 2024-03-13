@@ -7,13 +7,16 @@ export function authenticateToken(
   res: Response,
   next: NextFunction
 ): Response<any, Record<string, any>> | void {
+  if (req.body.operationName === "CreateUser") {
+    next();
+  }
   const token = req.header("Authorization");
 
   if (!token) {
     return res.status(401).json({ message: "Unauthorized - Token missing" });
   }
 
-  const decoded = verifyToken(token);
+  const decoded = verifyToken(token.split(" ")[1]);
 
   if (typeof decoded === "string") {
     return res.status(401).json({ message: "Unauthorized - Invalid token" });
