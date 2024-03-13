@@ -1,15 +1,16 @@
 import { PrismaClient } from "@prisma/client";
-import { IUser, IcreateUserResponse } from "../domain/user";
-import { IUserDto } from "../domain/userDto";
+import { IUser, IauthenticatedUserResponse } from "../domain/user";
+import { ILoginDto, IUserDto } from "../domain/userDto";
 import { comparePasswords, generateToken, hashPassword } from "./authService";
 
 const prisma = new PrismaClient();
 
-export async function authenticateUser(
-  name: string,
-  password: string
-): Promise<string> {
-  const user = await prisma.user.findFirst({ where: { name } });
+export async function authenticateUser({
+  name,
+  email,
+  password,
+}: ILoginDto): Promise<IauthenticatedUserResponse> {
+  const user = await prisma.user.findFirst({ where: { name, email } });
 
   if (!user) {
     throw new Error("No user found");
@@ -18,11 +19,12 @@ export async function authenticateUser(
   const passwordMatch = await comparePasswords(password, user.password);
 
   if (passwordMatch) {
-    return generateToken({
+    const token = generateToken({
       id: user.id,
       name: user.name ?? "",
       email: user.email,
     });
+    return { token, success: true };
   } else {
     throw new Error("Passwords do not match");
   }
@@ -32,7 +34,7 @@ export async function createUser({
   name,
   password,
   email,
-}: IUserDto): Promise<IcreateUserResponse> {
+}: IUserDto): Promise<IauthenticatedUserResponse> {
   try {
     const hashedPassword = await hashPassword(password);
     const user = await prisma.user.create({

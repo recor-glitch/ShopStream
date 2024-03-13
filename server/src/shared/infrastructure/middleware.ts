@@ -7,8 +7,10 @@ export function authenticateToken(
   res: Response,
   next: NextFunction
 ): Response<any, Record<string, any>> | void {
+  console.log("I am here", req.body.operationName);
+
   if (req.body.operationName === "CreateUser") {
-    next();
+    return next();
   }
   const token = req.header("Authorization");
 

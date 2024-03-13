@@ -7,7 +7,7 @@ export const typeDefs = gql`
     email: String!
   }
 
-  type CreateUserResponse {
+  type AuthResponse {
     token: String!
     success: Boolean!
   }
@@ -19,10 +19,7 @@ export const typeDefs = gql`
   }
 
   type Mutation {
-    createUser(
-      name: String!
-      password: String!
-      email: String!
-    ): CreateUserResponse
+    createUser(name: String!, password: String!, email: String!): AuthResponse
+    loginUser(name: String, password: String!, email: String): AuthResponse
   }
 `;

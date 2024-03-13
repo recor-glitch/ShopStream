@@ -1,5 +1,5 @@
-import { IUser, IcreateUserResponse } from "../domain/user";
-import { IUserDto } from "../domain/userDto";
+import { IUser, IauthenticatedUserResponse } from "../domain/user";
+import { ILoginDto, IUserDto } from "../domain/userDto";
 import { createUserRespository } from "../domain/userRepository";
 
 const userRepository = createUserRespository();
@@ -17,8 +17,14 @@ export const resolvers = {
     createUser: async (
       _: any,
       userDto: IUserDto
-    ): Promise<IcreateUserResponse> => {
+    ): Promise<IauthenticatedUserResponse> => {
       return await userRepository.createUser(userDto);
+    },
+    loginUser: async (
+      _: any,
+      loginDto: ILoginDto
+    ): Promise<IauthenticatedUserResponse> => {
+      return await userRepository.loginUser(loginDto);
     },
   },
 };

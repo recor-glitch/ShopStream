@@ -1,12 +1,10 @@
-import { typeDefs as authSchema } from "@/api/auth/application/schema";
 import { resolvers as authResolver } from "@/api/auth/application/resolvers";
-import { Application } from "express";
-import { authenticateToken } from "./middleware";
+import { typeDefs as authSchema } from "@/api/auth/application/schema";
 import { ApolloServer } from "@apollo/server";
-import gql from "graphql-tag";
 import { expressMiddleware } from "@apollo/server/express4";
-import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
-import http from "http";
+import { Application } from "express";
+import gql from "graphql-tag";
+import { authenticateToken } from "./middleware";
 
 export const startApolloServer = async (app: Application) => {
   const schemas = gql`
@@ -16,16 +14,15 @@ export const startApolloServer = async (app: Application) => {
     ...authResolver,
   };
 
-  const httpServer = http.createServer(app);
-
   const server = new ApolloServer({
     typeDefs: schemas,
     resolvers,
-    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+    plugins: [],
   });
 
   try {
     await server.start();
+    // Need to remove the authenticationToken from the middleware to run the postman introspection
     app.use("/graphql", authenticateToken, expressMiddleware(server));
   } catch (err) {
     console.log("Error starting Apollo server: ", err);
