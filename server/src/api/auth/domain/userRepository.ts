@@ -21,7 +21,11 @@ export const createUserRespository = (): IUserRepository => {
     createUser: async (user: IUserDto): Promise<IauthenticatedUserResponse> =>
       await createUser(user),
     loginUser: async (user: ILoginDto): Promise<IauthenticatedUserResponse> =>
-      await authenticateUser({ name: user.name, password: user.password }),
+      await authenticateUser({
+        name: user.name,
+        password: user.password,
+        email: user.email,
+      }),
     findUsersByQuery: async (query: string): Promise<IUser[]> =>
       await getUsersByQuery({ query }),
     findUserById: async (id: number): Promise<IUser> =>

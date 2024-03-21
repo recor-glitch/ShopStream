@@ -1,5 +1,6 @@
 import bcrypt from "bcrypt";
 import { createSigner, createVerifier } from "fast-jwt";
+import { OAuth2Client } from "google-auth-library";
 
 const secret = process.env.JWT_SECRET;
 const signer = createSigner({ key: secret });
@@ -27,4 +28,18 @@ export async function comparePasswords(
   hashedPassword: string
 ): Promise<boolean> {
   return bcrypt.compare(inputPassword, hashedPassword);
+}
+
+export async function getAuthenticatedClient(): Promise<void> {
+  const oAuth2Client = new OAuth2Client({
+    clientId: process.env.GOOGLE_CLIENT_ID,
+    clientSecret: process.env.GOOGLE_SECRET_KEY,
+  });
+
+  const authorizedToken = oAuth2Client.generateAuthUrl({
+    access_type: "offline",
+    scope: "https://www.googleapis.com/auth/userinfo.profile",
+  });
+
+  
 }

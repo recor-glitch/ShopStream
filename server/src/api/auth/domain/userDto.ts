@@ -5,7 +5,7 @@ export interface IUserDto {
 }
 
 export interface ILoginDto {
-  name?: string;
-  email?: string;
+  name: string;
+  email: string;
   password: string;
 }

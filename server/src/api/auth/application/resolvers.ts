@@ -1,4 +1,4 @@
-import { IUser, IauthenticatedUserResponse } from "../domain/user";
+import { IauthenticatedUserResponse } from "../domain/user";
 import { ILoginDto, IUserDto } from "../domain/userDto";
 import { createUserRespository } from "../domain/userRepository";
 

@@ -99,3 +99,7 @@ export async function getUsersByQuery({
     throw err;
   }
 }
+
+export async function googleSignIn(): Promise<void> {
+
+}
