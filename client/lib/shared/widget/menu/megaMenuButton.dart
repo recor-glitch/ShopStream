@@ -1,10 +1,10 @@
 import 'dart:async';
 
 import 'package:client/shared/constants.dart';
-import 'package:client/shared/utils/paddingUtil.dart';
+import 'package:client/shared/provider/navbar.provider.dart';
 import 'package:client/shared/utils/scaleConverter.dart';
-import 'package:client/shared/widget/menu/megaMenu.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MegaMenuButton extends StatefulWidget {
   final String menuTitle;
@@ -51,66 +51,33 @@ class _PlaygroundState extends State<MegaMenuButton>
             .chain(CurveTween(curve: Curves.easeOut))
             .animate(animationController);
 
-    return Material(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          MouseRegion(
-            cursor: SystemMouseCursors.click,
-            onEnter: (event) {
-              if (!animationController.isAnimating) {
-                animationController.forward();
-              }
-              setState(() {
-                menMegaMenuOpen = true;
-              });
-            },
-            onExit: (event) {
-              Timer(const Duration(milliseconds: 300), () {
-                if (!insideMenuContent) {
-                  if (animationController.isCompleted) {
-                    animationController.reset();
-                  }
-                  setState(() {
-                    menMegaMenuOpen = false;
-                  });
-                }
-              });
-            },
-            child: Text(
-              widget.menuTitle,
-              style: menuTitleTextStyle,
-            ),
-          ),
-          menMegaMenuOpen
-              ? Container(
-                  padding: PaddingUtils.all(3),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
-                  ),
-                  child: MouseRegion(
-                    onEnter: (event) {
-                      setState(() {
-                        insideMenuContent = true;
-                      });
-                    },
-                    onExit: (event) {
-                      if (animationController.isCompleted) {
-                        animationController.reset();
-                      }
-                      setState(() {
-                        menMegaMenuOpen = false;
-                        insideMenuContent = false;
-                      });
-                    },
-                    child: SlideTransition(
-                        position: boxPosition,
-                        child: const MegaMenu(
-                            contents: menMenuItems, crossAxisCount: 3)),
-                  ),
-                )
-              : Container()
-        ],
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (event) {
+        if (!animationController.isAnimating) {
+          animationController.forward();
+        }
+        Provider.of<NavProvider>(context, listen: false)
+            .toggleHovered(isHovered: true);
+      },
+      onExit: (event) {
+        Timer(const Duration(milliseconds: 300), () {
+          if (!Provider.of<NavProvider>(context, listen: false)
+              .hasHoveredContent) {
+            if (animationController.isCompleted) {
+              animationController.reset();
+            }
+            Provider.of<NavProvider>(context, listen: false)
+                .toggleHovered(isHovered: false);
+            // setState(() {
+            //   menMegaMenuOpen = false;
+            // });
+          }
+        });
+      },
+      child: Text(
+        widget.menuTitle,
+        style: menuTitleTextStyle,
       ),
     );
   }

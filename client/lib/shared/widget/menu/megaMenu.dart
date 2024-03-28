@@ -1,4 +1,5 @@
 import 'package:client/shared/domain/menu/megaMenu.d.dart';
+import 'package:client/shared/utils/paddingUtil.dart';
 import 'package:client/shared/utils/scaleConverter.dart';
 import 'package:client/shared/widget/menu/megaMenuItem.dart';
 import 'package:flutter/material.dart';
@@ -29,6 +30,10 @@ class _MegaMenuState extends State<MegaMenu> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      padding: PaddingUtils.all(20),
+      decoration: const BoxDecoration(
+        color: Color.fromRGBO(255, 255, 255, 0.7),
+      ),
       constraints: BoxConstraints(
         maxHeight: heightConverter.getSize(8),
         maxWidth: widthConverter.getSize(6),

@@ -1,7 +1,6 @@
 import 'package:client/shared/constants.dart';
 import 'package:client/shared/utils/paddingUtil.dart';
 import 'package:client/shared/utils/scaleConverter.dart';
-import 'package:client/shared/widget/menu/megaMenu.dart';
 import 'package:client/shared/widget/menu/megaMenuButton.dart';
 import 'package:flutter/material.dart';
 
@@ -13,8 +12,8 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  late final heightConverter;
-  late final widthConverter;
+  late final ScaleConverter heightConverter;
+  late final ScaleConverter widthConverter;
   bool menMegaMenuOpen = false;
 
   @override
