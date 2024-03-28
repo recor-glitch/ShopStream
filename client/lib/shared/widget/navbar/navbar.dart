@@ -1,5 +1,8 @@
+import 'package:client/shared/constants.dart';
 import 'package:client/shared/utils/paddingUtil.dart';
 import 'package:client/shared/utils/scaleConverter.dart';
+import 'package:client/shared/widget/menu/megaMenu.dart';
+import 'package:client/shared/widget/menu/megaMenuButton.dart';
 import 'package:flutter/material.dart';
 
 class Navbar extends StatefulWidget {
@@ -12,6 +15,7 @@ class Navbar extends StatefulWidget {
 class _NavbarState extends State<Navbar> {
   late final heightConverter;
   late final widthConverter;
+  bool menMegaMenuOpen = false;
 
   @override
   void didChangeDependencies() {
@@ -30,56 +34,58 @@ class _NavbarState extends State<Navbar> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: PaddingUtils.getMediumPadding(context),
+      padding: PaddingUtils.getExtraLargePadding(context),
       height: heightConverter.getSize(2),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          // NAVIGATIONS
-          SizedBox(
-            width: widthConverter.getSize(4),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Text(
-                  "Men",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  "Women",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  "Kids",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  "New & Featured",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-                Text(
-                  "Gift",
-                  style: TextStyle(fontWeight: FontWeight.w500),
-                ),
-              ],
+          // LOGO
+          Expanded(
+            child: SizedBox(
+              width: widthConverter.getSize(3),
+              child: const Text(
+                "SHOP STREAM .",
+                style: logoTextStyle,
+              ),
             ),
           ),
-          // LOGO
-          const SizedBox(),
+          // NAVIGATIONS
+          Expanded(
+            child: SizedBox(
+              width: widthConverter.getSize(4),
+              child: const Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  MegaMenuButton(menuTitle: "Men"),
+                  MegaMenuButton(menuTitle: "Women"),
+                  MegaMenuButton(menuTitle: "Kids"),
+                  MegaMenuButton(menuTitle: "New & Featured"),
+                  MegaMenuButton(menuTitle: "Gift"),
+                ],
+              ),
+            ),
+          ),
           // SEARCH & LOGIN
-          SizedBox(
-            width: widthConverter.getSize(2),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.center,
+          Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                Icon(Icons.search),
-                Icon(Icons.shopping_bag_outlined),
-                Text(
-                  "Login",
-                  style: TextStyle(fontWeight: FontWeight.w500),
+                SizedBox(
+                  width: widthConverter.getSize(2),
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(Icons.search),
+                      Icon(Icons.shopping_bag_outlined),
+                      Text(
+                        "Login",
+                        style: normalTextStyle,
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),

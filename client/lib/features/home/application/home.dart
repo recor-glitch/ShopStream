@@ -1,4 +1,5 @@
 import 'package:client/shared/utils/scaleConverter.dart';
+import 'package:client/shared/widget/navbar/drawer.dart';
 import 'package:client/shared/widget/navbar/responsiveNavbar.dart';
 import 'package:flutter/material.dart';
 
@@ -10,8 +11,8 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  late final heightConverter;
-  late final widthConverter;
+  late final ScaleConverter heightConverter;
+  late final ScaleConverter widthConverter;
 
   @override
   void didChangeDependencies() {
@@ -25,6 +26,7 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const DrawerComponent(),
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(heightConverter.getSize(2)),
         child: ResponsiveNavbar(context),

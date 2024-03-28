@@ -12,6 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
+      scrollBehavior: const ScrollBehavior().copyWith(scrollbars: false),
       title: 'Shop Stream',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(textTheme: GoogleFonts.varelaRoundTextTheme()),

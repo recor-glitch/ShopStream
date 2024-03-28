@@ -22,6 +22,13 @@ class PaddingUtils {
     ); // Adjust values as needed
   }
 
+  static EdgeInsets getExtraLargePadding(BuildContext context) {
+    return const EdgeInsets.symmetric(
+      horizontal: 40.0,
+      vertical: 20.0,
+    ); // Adjust values as needed
+  }
+
   static EdgeInsets onlyTop(double top) {
     return EdgeInsets.only(top: top);
   }
